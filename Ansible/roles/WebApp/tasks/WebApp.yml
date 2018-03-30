@@ -295,7 +295,7 @@
   - name: Clone repo
     git:
       repo: '{{ Repo }}'
-      dest: "/opt/WebApp/"
+      dest: "/opt/WebApp/{{ App }}"
     become: true
 
 
