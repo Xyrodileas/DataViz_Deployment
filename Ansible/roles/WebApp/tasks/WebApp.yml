@@ -57,6 +57,11 @@
     raw: pip install mysqlclient
     become: true
 
+  - name: Clean App path for git clone
+    file:
+      state: absent
+      path: "/opt/WebApp/"
+
   - name: Create Django project
     command: django-admin startproject WebApp
     become: yes
@@ -291,5 +296,6 @@
     git:
       repo: '{{ Repo }}'
       dest: "/opt/WebApp/"
+    become: true
 
 
