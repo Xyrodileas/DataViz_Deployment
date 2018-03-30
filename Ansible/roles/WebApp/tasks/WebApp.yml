@@ -4,13 +4,13 @@
     register: st
     become: true
 
-  - name: Install screen
+  - name: Install git
     become: true
-    when: ansible_os_family ==  "Debian"
     apt:
-      name: screen
+      name: git
       update_cache: true
       state: latest
+
   - name: Install Python3
     become: true
     package:
@@ -40,6 +40,10 @@
       name: libmysqlclient-dev
       update_cache: true
       state: latest
+
+  - name: Install networkx via pip
+    raw: pip install networkx
+    become: true
 
   - name: Install Django via pip
     raw: pip install django
@@ -223,11 +227,11 @@
     become: yes
     ignore_errors: yes
 
-  - name: Migrate model
-    command: python3 manage.py migrate
-    become: yes
-    args:
-      chdir: /opt/WebApp
+  # - name: Migrate model
+  #   command: python3 manage.py migrate
+  #   become: yes
+  #   args:
+  #     chdir: /opt/WebApp
 
   - name: Add include into views.py
     lineinfile:
@@ -277,3 +281,15 @@
         ]
       state: present
     become: yes
+
+  - name: Clean App path for git clone
+    file:
+      state: absent
+      path: "/opt/WebApp/{{ App }}/"
+
+  - name: Clone repo
+    git:
+      repo: '{{ Repo }}'
+      dest: "/opt/WebApp/"
+
+

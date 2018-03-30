@@ -1,8 +1,5 @@
 ---
   - hosts: all
-    connection: local
-
-  - hosts: all
     gather_facts: False
     remote_user: ubuntu
 
@@ -23,9 +20,9 @@
       file:
         path: /opt/done.txt
         state: touch
-    become: yes
-    
+      become: yes
+
     - name: Start Server
-      raw: nohup python3 /opt/WebApp/manage.py runserver 0.0.0.0:8000 &
+      raw: nohup python3 /opt/WebApp/manage.py runserver 0.0.0.0:8000 &; sleep 2
       become: true
 
